@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import VoiceChat from './VoiceChat';
 import RoomTimer from './RoomTimer';
+import RoomChat from './RoomChat';
 
 interface StudyRoom {
   id: string;
