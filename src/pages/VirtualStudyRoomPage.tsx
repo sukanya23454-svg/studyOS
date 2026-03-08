@@ -137,7 +137,7 @@ export default function VirtualStudyRoomPage() {
                   className="group relative rounded-xl overflow-hidden border border-border/50 hover:border-primary/40 transition-all text-left"
                 >
                   <div className="aspect-[4/3] relative" style={{ background: env.gradient }}>
-                    <div className="absolute inset-0 opacity-60"><AnimatedBackground type={env.animation} /></div>
+                    <div className="absolute inset-0 opacity-60"><AnimatedBackground sceneId={env.id} /></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-2.5">
                       <div className="flex items-center gap-1.5">
