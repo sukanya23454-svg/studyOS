@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useStudyData } from '@/hooks/useStudyData';
+import { useStudy } from '@/contexts/StudyContext';
 import { SUBJECT_COLORS } from '@/lib/types';
 import { formatTime } from '@/lib/formatters';
 import { motion } from 'framer-motion';
