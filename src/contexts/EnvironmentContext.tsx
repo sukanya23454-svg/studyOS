@@ -12,7 +12,7 @@ export interface StudyEnvironment {
   description: string;
   image?: string;
   gradient: string;
-  animation: AnimationType;
+  animation: string;
   ambientId: string; // maps to MusicPlayer AMBIENT_SOUNDS id
 }
 
