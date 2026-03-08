@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import VoiceChat from './VoiceChat';
 import RoomTimer from './RoomTimer';
+import RoomChat from './RoomChat';
 
 interface StudyRoom {
   id: string;
@@ -247,6 +248,9 @@ export default function FriendsPanel({ onLeave }: FriendsPanelProps) {
 
       {/* Voice Chat */}
       <VoiceChat members={members} currentUserId={user?.id} />
+
+      {/* Room Chat */}
+      <RoomChat roomId={currentRoom.id} />
     </div>
   );
 }

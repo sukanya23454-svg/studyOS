@@ -131,7 +131,7 @@ export const ENVIRONMENTS: StudyEnvironment[] = [
     id: 'cyberpunk-city', name: 'Cyberpunk City Desk', emoji: '💜',
     description: 'Neon-lit desk in a futuristic cityscape',
     gradient: 'linear-gradient(135deg, #0a0a20 0%, #1a0a30 30%, #200a2a 60%, #0a0a18 100%)',
-    animation: 'flicker', ambientId: 'cafe',
+    animation: 'neon-pulse', ambientId: 'cafe',
   },
   {
     id: 'museum-study', name: 'Quiet Museum Study', emoji: '🎨',
@@ -149,7 +149,7 @@ export const ENVIRONMENTS: StudyEnvironment[] = [
     id: 'desert-camp', name: 'Desert Night Camp', emoji: '🏜️',
     description: 'Starry desert sky with a warm campfire',
     gradient: 'linear-gradient(145deg, #0a0808 0%, #1a1510 30%, #0a0a18 70%, #050510 100%)',
-    animation: 'stars', ambientId: 'fireplace',
+    animation: 'campfire-sparks', ambientId: 'fireplace',
   },
   {
     id: 'minimalist-white', name: 'Minimalist White Room', emoji: '🤍',
@@ -179,7 +179,7 @@ export const ENVIRONMENTS: StudyEnvironment[] = [
     id: 'nordic-cabin', name: 'Nordic Cabin Study', emoji: '🦌',
     description: 'Scandinavian cabin with aurora borealis',
     gradient: 'linear-gradient(135deg, #0a1020 0%, #0a2030 30%, #081828 100%)',
-    animation: 'stars', ambientId: 'fireplace',
+    animation: 'aurora', ambientId: 'fireplace',
   },
   {
     id: 'victorian-library', name: 'Victorian Library', emoji: '📖',
