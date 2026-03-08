@@ -129,6 +129,18 @@ export function useStudyData() {
     setStats(prev => ({ ...prev, dailyGoalMinutes: minutes }));
   }, []);
 
+  const addAIConversation = useCallback((mode: AIConversation['mode'], query: string, response: string) => {
+    setAiHistory(prev => [...prev, { id: crypto.randomUUID(), mode, query, response, createdAt: new Date().toISOString() }]);
+  }, []);
+
+  const deleteAIConversation = useCallback((id: string) => {
+    setAiHistory(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  const clearAIHistory = useCallback(() => {
+    setAiHistory([]);
+  }, []);
+
   return {
     subjects, sessions, exams, confusions, notes, stats,
     addSubject, deleteSubject, addSession,
