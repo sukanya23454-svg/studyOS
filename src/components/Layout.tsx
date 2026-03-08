@@ -85,13 +85,19 @@ export default function Layout({ children }: LayoutProps) {
       </nav>
 
       {/* Main */}
-      <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
+      <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative">
+        {/* Lo-fi background */}
+        <div
+          className="fixed inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
+          style={{ backgroundImage: 'url(/study-bg.jpg)' }}
+        />
+        <div className="fixed inset-0 bg-background/85 pointer-events-none" />
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
-          className="p-4 md:p-8 max-w-6xl mx-auto"
+          className="relative z-10 p-4 md:p-8 max-w-6xl mx-auto"
         >
           {children}
         </motion.div>
