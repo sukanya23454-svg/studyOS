@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import MusicPlayer from './MusicPlayer';
+import AnimatedBackground from './AnimatedBackground';
 import { useEnvironment } from '@/contexts/EnvironmentContext';
 import {
   LayoutDashboard,
@@ -37,18 +38,65 @@ export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const { activeEnvironment } = useEnvironment();
 
-  const bgImage = activeEnvironment?.image || '/study-bg.jpg';
-
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col bg-sidebar border-r border-sidebar-border">
+      {/* Animated Environment Background */}
+      <AnimatePresence mode="wait">
+        {activeEnvironment ? (
+          <motion.div
+            key={activeEnvironment.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="fixed inset-0 z-0"
+          >
+            {/* Base: image or gradient */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: activeEnvironment.image
+                  ? `url(${activeEnvironment.image})`
+                  : undefined,
+                background: !activeEnvironment.image
+                  ? activeEnvironment.gradient
+                  : undefined,
+              }}
+            />
+            {/* Gradient overlay on images */}
+            {activeEnvironment.image && (
+              <div
+                className="absolute inset-0"
+                style={{ background: activeEnvironment.gradient, opacity: 0.4 }}
+              />
+            )}
+            {/* Animated particles */}
+            <AnimatedBackground type={activeEnvironment.animation} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="default-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(/study-bg.jpg)` }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Dim overlay for readability */}
+      <div className="fixed inset-0 z-[1] bg-background/75 pointer-events-none" />
+
+      {/* Sidebar - glass style */}
+      <aside className="hidden md:flex w-64 flex-col relative z-10 glass-panel border-r border-border/30">
         {/* Logo */}
-        <div className="flex items-center gap-2 px-6 py-5 border-b border-sidebar-border">
+        <div className="flex items-center gap-2 px-6 py-5 border-b border-border/30">
           <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="font-display text-lg font-bold text-sidebar-accent-foreground">StudyOS</span>
+          <span className="font-display text-lg font-bold text-foreground">StudyOS</span>
         </div>
 
         {/* Nav */}
@@ -64,12 +112,12 @@ export default function Layout({ children }: LayoutProps) {
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-active"
-                    className="absolute inset-0 bg-sidebar-accent rounded-lg"
+                    className="absolute inset-0 bg-primary/10 backdrop-blur-sm rounded-lg border border-primary/20"
                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   />
                 )}
-                <item.icon className={`relative z-10 w-4 h-4 ${isActive ? 'text-primary' : 'text-sidebar-foreground'}`} />
-                <span className={`relative z-10 ${isActive ? 'text-sidebar-accent-foreground' : 'text-sidebar-foreground'}`}>
+                <item.icon className={`relative z-10 w-4 h-4 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
+                <span className={`relative z-10 ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
                   {item.label}
                 </span>
               </NavLink>
@@ -79,7 +127,7 @@ export default function Layout({ children }: LayoutProps) {
       </aside>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-sidebar border-t border-sidebar-border flex justify-around py-2">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden glass-panel border-t border-border/30 flex justify-around py-2">
         {navItems.slice(0, 5).map((item) => {
           const isActive = location.pathname === item.to;
           return (
@@ -88,34 +136,21 @@ export default function Layout({ children }: LayoutProps) {
               to={item.to}
               className="flex flex-col items-center gap-0.5 px-2 py-1"
             >
-              <item.icon className={`w-5 h-5 ${isActive ? 'text-primary' : 'text-sidebar-foreground'}`} />
-              <span className={`text-[10px] ${isActive ? 'text-primary' : 'text-sidebar-foreground'}`}>{item.label}</span>
+              <item.icon className={`w-5 h-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
+              <span className={`text-[10px] ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>{item.label}</span>
             </NavLink>
           );
         })}
       </nav>
 
       {/* Main */}
-      <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative">
-        {/* Background with smooth transition */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={bgImage}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="fixed inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
-            style={{ backgroundImage: `url(${bgImage})` }}
-          />
-        </AnimatePresence>
-        <div className="fixed inset-0 bg-background/85 pointer-events-none" />
+      <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative z-10">
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
-          className="relative z-10 p-4 md:p-8 max-w-6xl mx-auto"
+          className="relative p-4 md:p-8 max-w-6xl mx-auto"
         >
           {children}
         </motion.div>
