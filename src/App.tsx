@@ -12,6 +12,7 @@ import NotesPage from "@/pages/NotesPage";
 import ConfusionPage from "@/pages/ConfusionPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import ExamsPage from "@/pages/ExamsPage";
+import AIAssistantPage from "@/pages/AIAssistantPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
