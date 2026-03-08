@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 
 export default function NotesPage() {
-  const { notes, subjects, addNote, updateNote, deleteNote } = useStudyData();
+  const { notes, subjects, addNote, updateNote, deleteNote } = useStudy();
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [title, setTitle] = useState('');

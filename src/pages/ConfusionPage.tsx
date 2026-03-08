@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function ConfusionPage() {
-  const { confusions, subjects, addConfusion, toggleConfusion, deleteConfusion } = useStudyData();
+  const { confusions, subjects, addConfusion, toggleConfusion, deleteConfusion } = useStudy();
   const [topic, setTopic] = useState('');
   const [subjectId, setSubjectId] = useState('');
 

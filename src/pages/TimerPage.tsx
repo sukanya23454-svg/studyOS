@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
 export default function TimerPage() {
-  const { subjects, addSession } = useStudyData();
+  const { subjects, addSession } = useStudy();
   const [mode, setMode] = useState<TimerMode>('pomodoro');
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [isRunning, setIsRunning] = useState(false);

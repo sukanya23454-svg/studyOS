@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function SubjectsPage() {
-  const { subjects, addSubject, deleteSubject } = useStudyData();
+  const { subjects, addSubject, deleteSubject } = useStudy();
   const [name, setName] = useState('');
   const [selectedColor, setSelectedColor] = useState(SUBJECT_COLORS[0]);
   const [showForm, setShowForm] = useState(false);

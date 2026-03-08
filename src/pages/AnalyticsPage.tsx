@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 export default function AnalyticsPage() {
-  const { sessions, subjects, stats } = useStudyData();
+  const { sessions, subjects, stats } = useStudy();
 
   // Study time by subject
   const subjectData = subjects.map(s => ({

@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function ExamsPage() {
-  const { exams, subjects, addExam, deleteExam } = useStudyData();
+  const { exams, subjects, addExam, deleteExam } = useStudy();
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState('');
   const [date, setDate] = useState('');

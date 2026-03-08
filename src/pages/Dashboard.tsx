@@ -9,7 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 
 export default function Dashboard() {
-  const { stats, exams, confusions, sessions } = useStudyData();
+  const { stats, exams, confusions, sessions } = useStudy();
   const navigate = useNavigate();
 
   const dailyProgress = Math.min(100, Math.round((stats.todayStudyTime / (stats.dailyGoalMinutes * 60)) * 100));
