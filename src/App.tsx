@@ -21,7 +21,7 @@ import AnalyticsPage from "@/pages/AnalyticsPage";
 import ExamsPage from "@/pages/ExamsPage";
 import AIAssistantPage from "@/pages/AIAssistantPage";
 import VirtualStudyRoomPage from "@/pages/VirtualStudyRoomPage";
-import StudyWithFriendsPage from "@/pages/StudyWithFriendsPage";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
