@@ -84,8 +84,8 @@ export default function Layout({ children }: LayoutProps) {
         )}
       </AnimatePresence>
 
-      {/* Dim overlay for readability */}
-      <div className="fixed inset-0 z-[1] bg-background/75 pointer-events-none" />
+      {/* Dim overlay for readability — lighter when environment is active */}
+      <div className={`fixed inset-0 z-[1] pointer-events-none ${activeEnvironment ? 'bg-background/50' : 'bg-background/75'}`} />
 
       {/* Sidebar - glass style */}
       <aside className="hidden md:flex w-64 flex-col relative z-10 glass-panel border-r border-border/30">
