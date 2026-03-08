@@ -459,7 +459,7 @@ export default function LandingPage() {
               ☕ Create Account
             </Link>
             <Link
-              to="/dashboard"
+              to="/login"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold border transition-all"
               style={{
                 borderColor: 'hsla(215,20%,50%,0.3)',
