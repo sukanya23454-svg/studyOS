@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import MusicPlayer from './MusicPlayer';
 import {
   LayoutDashboard,
   Timer,
