@@ -149,7 +149,7 @@ export const ENVIRONMENTS: StudyEnvironment[] = [
     id: 'desert-camp', name: 'Desert Night Camp', emoji: '🏜️',
     description: 'Starry desert sky with a warm campfire',
     gradient: 'linear-gradient(145deg, #0a0808 0%, #1a1510 30%, #0a0a18 70%, #050510 100%)',
-    animation: 'stars', ambientId: 'fireplace',
+    animation: 'campfire-sparks', ambientId: 'fireplace',
   },
   {
     id: 'minimalist-white', name: 'Minimalist White Room', emoji: '🤍',
