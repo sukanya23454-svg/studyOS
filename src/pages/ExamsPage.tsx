@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useStudyData } from '@/hooks/useStudyData';
+import { useStudy } from '@/contexts/StudyContext';
 import { daysUntil } from '@/lib/formatters';
 import { motion } from 'framer-motion';
 import { Plus, Trash2, CalendarClock } from 'lucide-react';
