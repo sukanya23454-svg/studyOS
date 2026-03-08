@@ -12,6 +12,7 @@ import NotesPage from "@/pages/NotesPage";
 import ConfusionPage from "@/pages/ConfusionPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import ExamsPage from "@/pages/ExamsPage";
+import AIAssistantPage from "@/pages/AIAssistantPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/confusion" element={<ConfusionPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/exams" element={<ExamsPage />} />
+              <Route path="/ai-assistant" element={<AIAssistantPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
