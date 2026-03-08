@@ -131,7 +131,7 @@ export const ENVIRONMENTS: StudyEnvironment[] = [
     id: 'cyberpunk-city', name: 'Cyberpunk City Desk', emoji: '💜',
     description: 'Neon-lit desk in a futuristic cityscape',
     gradient: 'linear-gradient(135deg, #0a0a20 0%, #1a0a30 30%, #200a2a 60%, #0a0a18 100%)',
-    animation: 'flicker', ambientId: 'cafe',
+    animation: 'neon-pulse', ambientId: 'cafe',
   },
   {
     id: 'museum-study', name: 'Quiet Museum Study', emoji: '🎨',
