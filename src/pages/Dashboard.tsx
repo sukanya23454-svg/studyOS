@@ -1,4 +1,4 @@
-import { useStudyData } from '@/hooks/useStudyData';
+import { useStudy } from '@/contexts/StudyContext';
 import StatCard from '@/components/StatCard';
 import { formatTime, daysUntil } from '@/lib/formatters';
 import { calculateLevel, xpForCurrentLevel, XP_PER_LEVEL, getLevelTitle } from '@/lib/types';
