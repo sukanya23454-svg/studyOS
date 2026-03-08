@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useRef, useCallback, useEffect } from 'react';
-import type { AnimationType } from '@/components/AnimatedBackground';
 
 import envRainyCafe from '@/assets/env-rainy-cafe.jpg';
 import envCozyLibrary from '@/assets/env-cozy-library.jpg';
