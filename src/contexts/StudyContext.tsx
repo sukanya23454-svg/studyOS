@@ -6,8 +6,8 @@ type StudyContextType = ReturnType<typeof useStudyData>;
 const StudyContext = createContext<StudyContextType | null>(null);
 
 export function StudyProvider({ children }: { children: React.ReactNode }) {
-  const data = useStudyData();
-  return <StudyContext.Provider value={data}>{children}</StudyContext.Provider>;
+  const studyData = useStudyData();
+  return <StudyContext.Provider value={studyData}>{children}</StudyContext.Provider>;
 }
 
 export function useStudy(): StudyContextType {
