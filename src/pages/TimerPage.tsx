@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useStudyData } from '@/hooks/useStudyData';
+import { useStudy } from '@/contexts/StudyContext';
 import { TIMER_PRESETS, type TimerMode } from '@/lib/types';
 import { formatTimerDisplay } from '@/lib/formatters';
 import { motion, AnimatePresence } from 'framer-motion';
