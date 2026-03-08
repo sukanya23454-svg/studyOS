@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Music, X, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
+import { useEnvironment } from '@/contexts/EnvironmentContext';
 
 const PLAYLISTS = [
   { label: 'Lo-fi Beats', emoji: '🎧', spotifyUri: '0vvXsWCC9xrXsKd4FyS8kM' },
@@ -11,7 +12,7 @@ const PLAYLISTS = [
   { label: 'Ambient Focus', emoji: '🌙', spotifyUri: '37i9dQZF1DX3Ogo9pFvBkY' },
 ];
 
-const AMBIENT_SOUNDS = [
+export const AMBIENT_SOUNDS = [
   { id: 'rain', label: 'Rain', emoji: '🌧️', url: 'https://cdn.freesound.org/previews/531/531947_6468985-lq.mp3' },
   { id: 'thunderstorm', label: 'Thunderstorm', emoji: '⛈️', url: 'https://cdn.freesound.org/previews/401/401275_7740266-lq.mp3' },
   { id: 'fireplace', label: 'Fireplace', emoji: '🔥', url: 'https://cdn.freesound.org/previews/499/499257_2524387-lq.mp3' },
@@ -29,8 +30,10 @@ export default function MusicPlayer() {
   const [activeAmbient, setActiveAmbient] = useState<string | null>(null);
   const [volume, setVolume] = useState(50);
   const [isMuted, setIsMuted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const { activeEnvironment } = useEnvironment();
 
   const isPlaying = !!activeAmbient || !!activePlaylist;
 
@@ -46,6 +49,24 @@ export default function MusicPlayer() {
     return () => document.removeEventListener('mousedown', handler);
   }, [isOpen]);
 
+  const playAmbientById = useCallback((soundId: string) => {
+    const sound = AMBIENT_SOUNDS.find(s => s.id === soundId);
+    if (!sound) return;
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = '';
+    }
+
+    const audio = new Audio(sound.url);
+    audio.loop = true;
+    audio.volume = isMuted ? 0 : volume / 100;
+    audio.play().catch(() => {});
+    audioRef.current = audio;
+    setActiveAmbient(sound.id);
+    setIsPaused(false);
+  }, [volume, isMuted]);
+
   const stopAmbient = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -53,31 +74,34 @@ export default function MusicPlayer() {
       audioRef.current = null;
     }
     setActiveAmbient(null);
+    setIsPaused(false);
   }, []);
 
   const playAmbient = useCallback((sound: typeof AMBIENT_SOUNDS[0]) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.src = '';
-    }
     if (activeAmbient === sound.id) {
       stopAmbient();
       return;
     }
-    const audio = new Audio(sound.url);
-    audio.loop = true;
-    audio.volume = isMuted ? 0 : volume / 100;
-    audio.play().catch(() => {});
-    audioRef.current = audio;
-    setActiveAmbient(sound.id);
-  }, [activeAmbient, volume, isMuted, stopAmbient]);
+    playAmbientById(sound.id);
+  }, [activeAmbient, stopAmbient, playAmbientById]);
+
+  // Auto-play ambient when environment changes
+  useEffect(() => {
+    if (activeEnvironment) {
+      playAmbientById(activeEnvironment.ambientId);
+    } else {
+      stopAmbient();
+    }
+  }, [activeEnvironment]); // intentionally only depend on activeEnvironment
 
   const togglePause = useCallback(() => {
     if (!audioRef.current) return;
     if (audioRef.current.paused) {
       audioRef.current.play().catch(() => {});
+      setIsPaused(false);
     } else {
       audioRef.current.pause();
+      setIsPaused(true);
     }
   }, []);
 
@@ -108,10 +132,10 @@ export default function MusicPlayer() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            className="w-[280px] rounded-2xl border border-border bg-card/95 backdrop-blur-xl shadow-elevated overflow-hidden"
+            className="w-[280px] rounded-2xl border border-border glass-panel shadow-elevated overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50">
               <div className="flex items-center gap-2">
                 <Music className="w-4 h-4 text-primary" />
                 <span className="font-display text-sm font-semibold">Focus Music</span>
@@ -122,7 +146,7 @@ export default function MusicPlayer() {
             </div>
 
             {/* Tabs */}
-            <div className="flex border-b border-border">
+            <div className="flex border-b border-border/50">
               {(['ambient', 'music'] as Tab[]).map(t => (
                 <button
                   key={t}
@@ -190,9 +214,9 @@ export default function MusicPlayer() {
 
             {/* Controls bar */}
             {activeAmbient && (
-              <div className="px-3 py-2 border-t border-border flex items-center gap-2">
+              <div className="px-3 py-2 border-t border-border/50 flex items-center gap-2">
                 <button onClick={togglePause} className="text-primary hover:text-primary/80 transition-colors">
-                  <Play className="w-4 h-4" />
+                  {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                 </button>
                 <span className="text-[10px] text-muted-foreground truncate flex-shrink-0">
                   {activeAmbientLabel?.emoji} {activeAmbientLabel?.label}
