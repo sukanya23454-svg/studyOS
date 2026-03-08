@@ -179,7 +179,7 @@ export const ENVIRONMENTS: StudyEnvironment[] = [
     id: 'nordic-cabin', name: 'Nordic Cabin Study', emoji: '🦌',
     description: 'Scandinavian cabin with aurora borealis',
     gradient: 'linear-gradient(135deg, #0a1020 0%, #0a2030 30%, #081828 100%)',
-    animation: 'stars', ambientId: 'fireplace',
+    animation: 'aurora', ambientId: 'fireplace',
   },
   {
     id: 'victorian-library', name: 'Victorian Library', emoji: '📖',

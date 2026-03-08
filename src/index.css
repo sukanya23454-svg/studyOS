@@ -129,7 +129,12 @@
     background-clip: text;
   }
   .glass-panel {
-    background: hsl(var(--background) / 0.6);
+    background: hsl(var(--background) / 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .glass-panel-light {
+    background: hsl(var(--background) / 0.3);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
