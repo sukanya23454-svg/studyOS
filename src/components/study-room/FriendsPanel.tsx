@@ -248,6 +248,9 @@ export default function FriendsPanel({ onLeave }: FriendsPanelProps) {
 
       {/* Voice Chat */}
       <VoiceChat members={members} currentUserId={user?.id} />
+
+      {/* Room Chat */}
+      <RoomChat roomId={currentRoom.id} />
     </div>
   );
 }
