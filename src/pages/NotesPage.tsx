@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useStudyData } from '@/hooks/useStudyData';
+import { useStudy } from '@/contexts/StudyContext';
 import { motion } from 'framer-motion';
 import { Plus, FileText, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
