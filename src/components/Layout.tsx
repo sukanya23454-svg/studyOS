@@ -21,6 +21,7 @@ const navItems = [
   { to: '/confusion', icon: HelpCircle, label: 'Confusion Tracker' },
   { to: '/analytics', icon: BarChart3, label: 'Analytics' },
   { to: '/exams', icon: CalendarClock, label: 'Exams' },
+  { to: '/ai-assistant', icon: BrainCircuit, label: 'AI Assistant' },
 ];
 
 interface LayoutProps {
