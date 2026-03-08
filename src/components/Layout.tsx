@@ -10,6 +10,7 @@ import {
   BarChart3,
   CalendarClock,
   Sparkles,
+  BrainCircuit,
 } from 'lucide-react';
 
 const navItems = [
