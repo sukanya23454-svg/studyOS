@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useRef, useCallback, useEffect } from 'react';
-import type { AnimationType } from '@/components/AnimatedBackground';
 
 import envRainyCafe from '@/assets/env-rainy-cafe.jpg';
 import envCozyLibrary from '@/assets/env-cozy-library.jpg';
@@ -13,7 +12,7 @@ export interface StudyEnvironment {
   description: string;
   image?: string;
   gradient: string;
-  animation: AnimationType;
+  animation: string;
   ambientId: string; // maps to MusicPlayer AMBIENT_SOUNDS id
 }
 

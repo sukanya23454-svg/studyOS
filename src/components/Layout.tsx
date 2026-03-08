@@ -69,7 +69,7 @@ export default function Layout({ children }: LayoutProps) {
               />
             )}
             {/* Animated particles */}
-            <AnimatedBackground type={activeEnvironment.animation} />
+            <AnimatedBackground sceneId={activeEnvironment.id} />
           </motion.div>
         ) : (
           <motion.div
