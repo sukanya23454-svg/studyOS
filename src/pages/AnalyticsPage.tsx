@@ -1,4 +1,4 @@
-import { useStudyData } from '@/hooks/useStudyData';
+import { useStudy } from '@/contexts/StudyContext';
 import { formatTime } from '@/lib/formatters';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
