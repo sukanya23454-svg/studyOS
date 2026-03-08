@@ -35,6 +35,7 @@ export function useStudyData() {
   const [exams, setExams] = useState<Exam[]>(() => loadJSON('studyos_exams', []));
   const [confusions, setConfusions] = useState<ConfusionItem[]>(() => loadJSON('studyos_confusions', []));
   const [notes, setNotes] = useState<Note[]>(() => loadJSON('studyos_notes', []));
+  const [aiHistory, setAiHistory] = useState<AIConversation[]>(() => loadJSON('studyos_ai_history', []));
   const [stats, setStats] = useState<UserStats>(() => {
     const s = loadJSON('studyos_stats', defaultStats);
     if (s.todayDate !== today()) {
