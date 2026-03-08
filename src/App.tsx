@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { StudyProvider } from "@/contexts/StudyContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { EnvironmentProvider } from "@/contexts/EnvironmentContext";
 import Layout from "@/components/Layout";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
@@ -19,6 +20,8 @@ import ConfusionPage from "@/pages/ConfusionPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import ExamsPage from "@/pages/ExamsPage";
 import AIAssistantPage from "@/pages/AIAssistantPage";
+import VirtualStudyRoomPage from "@/pages/VirtualStudyRoomPage";
+import StudyWithFriendsPage from "@/pages/StudyWithFriendsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,32 +54,36 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <StudyProvider>
-          <BrowserRouter>
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <EnvironmentProvider>
+            <BrowserRouter>
+              <Routes>
+                {/* Public routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-              {/* Protected app routes */}
-              <Route element={<ProtectedRoute />}>
-                <Route element={<AppLayout />}>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/timer" element={<TimerPage />} />
-                  <Route path="/subjects" element={<SubjectsPage />} />
-                  <Route path="/notes" element={<NotesPage />} />
-                  <Route path="/confusion" element={<ConfusionPage />} />
-                  <Route path="/analytics" element={<AnalyticsPage />} />
-                  <Route path="/exams" element={<ExamsPage />} />
-                  <Route path="/ai-assistant" element={<AIAssistantPage />} />
+                {/* Protected app routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<AppLayout />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/timer" element={<TimerPage />} />
+                    <Route path="/subjects" element={<SubjectsPage />} />
+                    <Route path="/notes" element={<NotesPage />} />
+                    <Route path="/confusion" element={<ConfusionPage />} />
+                    <Route path="/analytics" element={<AnalyticsPage />} />
+                    <Route path="/exams" element={<ExamsPage />} />
+                    <Route path="/ai-assistant" element={<AIAssistantPage />} />
+                    <Route path="/study-room" element={<VirtualStudyRoomPage />} />
+                    <Route path="/friends" element={<StudyWithFriendsPage />} />
+                  </Route>
                 </Route>
-              </Route>
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </EnvironmentProvider>
         </StudyProvider>
       </AuthProvider>
     </TooltipProvider>

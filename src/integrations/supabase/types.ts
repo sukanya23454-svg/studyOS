@@ -41,6 +41,74 @@ export type Database = {
         }
         Relationships: []
       }
+      room_members: {
+        Row: {
+          display_name: string
+          id: string
+          joined_at: string
+          room_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          display_name?: string
+          id?: string
+          joined_at?: string
+          room_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          display_name?: string
+          id?: string
+          joined_at?: string
+          room_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_members_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "study_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      study_rooms: {
+        Row: {
+          created_at: string
+          host_id: string
+          id: string
+          invite_code: string
+          name: string
+          timer_duration: number
+          timer_remaining: number | null
+          timer_started_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          host_id: string
+          id?: string
+          invite_code?: string
+          name: string
+          timer_duration?: number
+          timer_remaining?: number | null
+          timer_started_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          host_id?: string
+          id?: string
+          invite_code?: string
+          name?: string
+          timer_duration?: number
+          timer_remaining?: number | null
+          timer_started_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
