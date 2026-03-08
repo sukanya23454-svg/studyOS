@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Music, X, ChevronUp, Volume2, VolumeX } from 'lucide-react';
+import { Music, X, Volume2, VolumeX, Play, Pause } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 
 const PLAYLISTS = [
@@ -9,47 +9,15 @@ const PLAYLISTS = [
   { label: 'Piano Focus', emoji: '🎹', spotifyUri: '37i9dQZF1DX4sWSpwq3LiO' },
   { label: 'Classical Focus', emoji: '🎻', spotifyUri: '37i9dQZF1DWWEJlAGA9gs0' },
   { label: 'Ambient Focus', emoji: '🌙', spotifyUri: '37i9dQZF1DX3Ogo9pFvBkY' },
-  { label: 'Deep Focus', emoji: '🧠', spotifyUri: '37i9dQZF1DWZeKCadgRdKQ' },
 ];
 
 const AMBIENT_SOUNDS = [
-  {
-    id: 'rain',
-    label: 'Rain',
-    emoji: '🌧️',
-    // Free public domain rain audio
-    url: 'https://cdn.freesound.org/previews/531/531947_6468985-lq.mp3',
-  },
-  {
-    id: 'thunderstorm',
-    label: 'Thunderstorm',
-    emoji: '⛈️',
-    url: 'https://cdn.freesound.org/previews/401/401275_7740266-lq.mp3',
-  },
-  {
-    id: 'fireplace',
-    label: 'Fireplace',
-    emoji: '🔥',
-    url: 'https://cdn.freesound.org/previews/499/499257_2524387-lq.mp3',
-  },
-  {
-    id: 'cafe',
-    label: 'Café Noise',
-    emoji: '☕',
-    url: 'https://cdn.freesound.org/previews/424/424898_525929-lq.mp3',
-  },
-  {
-    id: 'birds',
-    label: 'Forest Birds',
-    emoji: '🐦',
-    url: 'https://cdn.freesound.org/previews/534/534919_4397472-lq.mp3',
-  },
-  {
-    id: 'ocean',
-    label: 'Ocean Waves',
-    emoji: '🌊',
-    url: 'https://cdn.freesound.org/previews/467/467539_5765286-lq.mp3',
-  },
+  { id: 'rain', label: 'Rain', emoji: '🌧️', url: 'https://cdn.freesound.org/previews/531/531947_6468985-lq.mp3' },
+  { id: 'thunderstorm', label: 'Thunderstorm', emoji: '⛈️', url: 'https://cdn.freesound.org/previews/401/401275_7740266-lq.mp3' },
+  { id: 'fireplace', label: 'Fireplace', emoji: '🔥', url: 'https://cdn.freesound.org/previews/499/499257_2524387-lq.mp3' },
+  { id: 'cafe', label: 'Café Noise', emoji: '☕', url: 'https://cdn.freesound.org/previews/424/424898_525929-lq.mp3' },
+  { id: 'birds', label: 'Forest Birds', emoji: '🐦', url: 'https://cdn.freesound.org/previews/534/534919_4397472-lq.mp3' },
+  { id: 'ocean', label: 'Ocean Waves', emoji: '🌊', url: 'https://cdn.freesound.org/previews/467/467539_5765286-lq.mp3' },
 ];
 
 type Tab = 'music' | 'ambient';
@@ -62,8 +30,21 @@ export default function MusicPlayer() {
   const [volume, setVolume] = useState(50);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   const isPlaying = !!activeAmbient || !!activePlaylist;
+
+  // Close on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [isOpen]);
 
   const stopAmbient = useCallback(() => {
     if (audioRef.current) {
@@ -75,17 +56,14 @@ export default function MusicPlayer() {
   }, []);
 
   const playAmbient = useCallback((sound: typeof AMBIENT_SOUNDS[0]) => {
-    // Stop any currently playing ambient
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.src = '';
     }
-
     if (activeAmbient === sound.id) {
       stopAmbient();
       return;
     }
-
     const audio = new Audio(sound.url);
     audio.loop = true;
     audio.volume = isMuted ? 0 : volume / 100;
@@ -94,14 +72,21 @@ export default function MusicPlayer() {
     setActiveAmbient(sound.id);
   }, [activeAmbient, volume, isMuted, stopAmbient]);
 
-  // Update volume on playing audio
+  const togglePause = useCallback(() => {
+    if (!audioRef.current) return;
+    if (audioRef.current.paused) {
+      audioRef.current.play().catch(() => {});
+    } else {
+      audioRef.current.pause();
+    }
+  }, []);
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume / 100;
     }
   }, [volume, isMuted]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (audioRef.current) {
@@ -111,140 +96,118 @@ export default function MusicPlayer() {
     };
   }, []);
 
+  const activeAmbientLabel = AMBIENT_SOUNDS.find(s => s.id === activeAmbient);
+
   return (
-    <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50">
+    <div className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50" ref={panelRef}>
       <AnimatePresence mode="wait">
         {isOpen ? (
           <motion.div
             key="panel"
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: 12, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-            className="w-[320px] rounded-2xl border border-border bg-card/95 backdrop-blur-xl shadow-elevated overflow-hidden"
+            exit={{ opacity: 0, y: 12, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            className="w-[280px] rounded-2xl border border-border bg-card/95 backdrop-blur-xl shadow-elevated overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
               <div className="flex items-center gap-2">
                 <Music className="w-4 h-4 text-primary" />
-                <span className="font-display text-sm font-semibold">Focus Sounds</span>
+                <span className="font-display text-sm font-semibold">Focus Music</span>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
-                <X className="w-4 h-4" />
+              <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-secondary/60">
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
 
             {/* Tabs */}
             <div className="flex border-b border-border">
-              <button
-                onClick={() => setTab('ambient')}
-                className={`flex-1 py-2 text-xs font-medium transition-colors ${
-                  tab === 'ambient'
-                    ? 'text-primary border-b-2 border-primary'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                🎧 Ambient Sounds
-              </button>
-              <button
-                onClick={() => setTab('music')}
-                className={`flex-1 py-2 text-xs font-medium transition-colors ${
-                  tab === 'music'
-                    ? 'text-primary border-b-2 border-primary'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                🎵 Spotify Music
-              </button>
+              {(['ambient', 'music'] as Tab[]).map(t => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  className={`flex-1 py-2 text-xs font-medium transition-colors ${
+                    tab === t ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {t === 'ambient' ? '🎧 Ambient' : '🎵 Playlists'}
+                </button>
+              ))}
             </div>
 
-            {tab === 'ambient' ? (
-              <>
-                {/* Ambient grid */}
-                <div className="p-3 grid grid-cols-2 gap-2">
-                  {AMBIENT_SOUNDS.map((sound) => (
+            {/* Content */}
+            <div className="p-2.5 max-h-[260px] overflow-y-auto">
+              {tab === 'ambient' ? (
+                <div className="grid grid-cols-2 gap-1.5">
+                  {AMBIENT_SOUNDS.map(sound => (
                     <button
                       key={sound.id}
                       onClick={() => playAmbient(sound)}
-                      className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-left text-xs font-medium transition-all ${
+                      className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-left text-xs font-medium transition-all ${
                         activeAmbient === sound.id
-                          ? 'bg-primary/15 text-primary border border-primary/30 animate-pulse-glow'
-                          : 'bg-secondary/60 text-secondary-foreground hover:bg-secondary border border-transparent'
+                          ? 'bg-primary/15 text-primary border border-primary/30'
+                          : 'bg-secondary/50 text-secondary-foreground hover:bg-secondary border border-transparent'
                       }`}
                     >
-                      <span className="text-base">{sound.emoji}</span>
+                      <span className="text-sm">{sound.emoji}</span>
                       <span className="truncate">{sound.label}</span>
                     </button>
                   ))}
                 </div>
-
-                {/* Volume control */}
-                {activeAmbient && (
-                  <div className="px-4 pb-3 flex items-center gap-3">
-                    <button onClick={() => setIsMuted(!isMuted)} className="text-muted-foreground hover:text-foreground transition-colors">
-                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                    </button>
-                    <Slider
-                      value={[isMuted ? 0 : volume]}
-                      onValueChange={([v]) => { setVolume(v); setIsMuted(false); }}
-                      max={100}
-                      step={1}
-                      className="flex-1"
-                    />
-                    <span className="text-[10px] text-muted-foreground font-mono w-7 text-right">
-                      {isMuted ? 0 : volume}%
-                    </span>
-                  </div>
-                )}
-
-                {!activeAmbient && (
-                  <p className="px-4 pb-4 text-xs text-muted-foreground text-center">
-                    Tap a sound to create your study ambience 🌙
-                  </p>
-                )}
-              </>
-            ) : (
-              <>
-                {/* Playlist grid */}
-                <div className="p-3 grid grid-cols-2 gap-2">
-                  {PLAYLISTS.map((pl) => (
+              ) : (
+                <div className="space-y-1.5">
+                  {PLAYLISTS.map(pl => (
                     <button
                       key={pl.spotifyUri}
-                      onClick={() => setActivePlaylist(pl)}
-                      className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-left text-xs font-medium transition-all ${
+                      onClick={() => setActivePlaylist(activePlaylist?.spotifyUri === pl.spotifyUri ? null : pl)}
+                      className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-left text-xs font-medium transition-all ${
                         activePlaylist?.spotifyUri === pl.spotifyUri
                           ? 'bg-primary/15 text-primary border border-primary/30'
-                          : 'bg-secondary/60 text-secondary-foreground hover:bg-secondary border border-transparent'
+                          : 'bg-secondary/50 text-secondary-foreground hover:bg-secondary border border-transparent'
                       }`}
                     >
-                      <span className="text-base">{pl.emoji}</span>
-                      <span className="truncate">{pl.label}</span>
+                      <span className="text-sm">{pl.emoji}</span>
+                      <span>{pl.label}</span>
                     </button>
                   ))}
-                </div>
-
-                {activePlaylist && (
-                  <div className="px-3 pb-3">
+                  {activePlaylist && (
                     <iframe
                       key={activePlaylist.spotifyUri}
                       src={`https://open.spotify.com/embed/playlist/${activePlaylist.spotifyUri}?utm_source=generator&theme=0`}
                       width="100%"
-                      height="152"
+                      height="80"
                       frameBorder="0"
                       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                       loading="lazy"
-                      className="rounded-xl"
+                      className="rounded-xl mt-1"
                       title={activePlaylist.label}
                     />
-                  </div>
-                )}
+                  )}
+                </div>
+              )}
+            </div>
 
-                {!activePlaylist && (
-                  <p className="px-4 pb-4 text-xs text-muted-foreground text-center">
-                    Pick a vibe to start studying 🎶
-                  </p>
-                )}
-              </>
+            {/* Controls bar */}
+            {activeAmbient && (
+              <div className="px-3 py-2 border-t border-border flex items-center gap-2">
+                <button onClick={togglePause} className="text-primary hover:text-primary/80 transition-colors">
+                  <Play className="w-4 h-4" />
+                </button>
+                <span className="text-[10px] text-muted-foreground truncate flex-shrink-0">
+                  {activeAmbientLabel?.emoji} {activeAmbientLabel?.label}
+                </span>
+                <button onClick={() => setIsMuted(!isMuted)} className="text-muted-foreground hover:text-foreground transition-colors ml-auto">
+                  {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                </button>
+                <Slider
+                  value={[isMuted ? 0 : volume]}
+                  onValueChange={([v]) => { setVolume(v); setIsMuted(false); }}
+                  max={100}
+                  step={1}
+                  className="w-16"
+                />
+              </div>
             )}
           </motion.div>
         ) : (
@@ -253,16 +216,15 @@ export default function MusicPlayer() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="w-12 h-12 rounded-full gradient-primary shadow-elevated flex items-center justify-center glow-primary"
+            className="flex items-center gap-2 px-4 h-10 rounded-full gradient-primary shadow-elevated glow-primary"
           >
-            {isPlaying ? (
-              <ChevronUp className="w-5 h-5 text-primary-foreground" />
-            ) : (
-              <Music className="w-5 h-5 text-primary-foreground" />
-            )}
+            <Music className="w-4 h-4 text-primary-foreground" />
+            <span className="text-xs font-medium text-primary-foreground">
+              {isPlaying ? (activeAmbientLabel?.label || activePlaylist?.label) : 'Focus Music'}
+            </span>
           </motion.button>
         )}
       </AnimatePresence>
