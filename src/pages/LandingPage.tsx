@@ -228,7 +228,7 @@ export default function LandingPage() {
             className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
           >
             <Link
-              to="/dashboard"
+              to="/signup"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all"
               style={{
                 background: 'linear-gradient(135deg, hsla(38,90%,55%,0.9), hsla(25,80%,50%,0.9))',
@@ -239,7 +239,7 @@ export default function LandingPage() {
               ☁ Start Studying
             </Link>
             <Link
-              to="/dashboard"
+              to="/login"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold border transition-all"
               style={{
                 borderColor: 'hsla(215,20%,50%,0.3)',
@@ -448,7 +448,7 @@ export default function LandingPage() {
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
-              to="/dashboard"
+              to="/signup"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all"
               style={{
                 background: 'linear-gradient(135deg, hsla(38,90%,55%,0.9), hsla(25,80%,50%,0.9))',
@@ -459,7 +459,7 @@ export default function LandingPage() {
               ☕ Create Account
             </Link>
             <Link
-              to="/dashboard"
+              to="/login"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold border transition-all"
               style={{
                 borderColor: 'hsla(215,20%,50%,0.3)',
