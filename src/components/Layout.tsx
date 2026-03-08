@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import MusicPlayer from './MusicPlayer';
+import { useEnvironment } from '@/contexts/EnvironmentContext';
 import {
   LayoutDashboard,
   Timer,
@@ -11,6 +12,8 @@ import {
   CalendarClock,
   Sparkles,
   BrainCircuit,
+  Palette,
+  Users,
 } from 'lucide-react';
 
 const navItems = [
@@ -22,6 +25,8 @@ const navItems = [
   { to: '/analytics', icon: BarChart3, label: 'Analytics' },
   { to: '/exams', icon: CalendarClock, label: 'Exams' },
   { to: '/ai-assistant', icon: BrainCircuit, label: 'AI Assistant' },
+  { to: '/study-room', icon: Palette, label: 'Virtual Room' },
+  { to: '/friends', icon: Users, label: 'Study Friends' },
 ];
 
 interface LayoutProps {
@@ -30,6 +35,9 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const { activeEnvironment } = useEnvironment();
+
+  const bgImage = activeEnvironment?.image || '/study-bg.jpg';
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -44,7 +52,7 @@ export default function Layout({ children }: LayoutProps) {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.to;
             return (
@@ -89,11 +97,18 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Main */}
       <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative">
-        {/* Lo-fi background */}
-        <div
-          className="fixed inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
-          style={{ backgroundImage: 'url(/study-bg.jpg)' }}
-        />
+        {/* Background with smooth transition */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={bgImage}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="fixed inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
+            style={{ backgroundImage: `url(${bgImage})` }}
+          />
+        </AnimatePresence>
         <div className="fixed inset-0 bg-background/85 pointer-events-none" />
         <motion.div
           key={location.pathname}
