@@ -49,6 +49,7 @@ export function useStudyData() {
   useEffect(() => saveJSON('studyos_exams', exams), [exams]);
   useEffect(() => saveJSON('studyos_confusions', confusions), [confusions]);
   useEffect(() => saveJSON('studyos_notes', notes), [notes]);
+  useEffect(() => saveJSON('studyos_ai_history', aiHistory), [aiHistory]);
   useEffect(() => saveJSON('studyos_stats', stats), [stats]);
 
   const addSubject = useCallback((name: string, color: string) => {
