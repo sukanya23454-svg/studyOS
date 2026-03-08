@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/timer', icon: Timer, label: 'Study Timer' },
   { to: '/subjects', icon: BookOpen, label: 'Subjects' },
   { to: '/notes', icon: FileText, label: 'Notes' },
