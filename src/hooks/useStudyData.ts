@@ -142,11 +142,12 @@ export function useStudyData() {
   }, []);
 
   return {
-    subjects, sessions, exams, confusions, notes, stats,
+    subjects, sessions, exams, confusions, notes, stats, aiHistory,
     addSubject, deleteSubject, addSession,
     addExam, deleteExam,
     addConfusion, toggleConfusion, deleteConfusion,
     addNote, updateNote, deleteNote,
     setDailyGoal,
+    addAIConversation, deleteAIConversation, clearAIHistory,
   };
 }
