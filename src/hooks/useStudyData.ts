@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Subject, StudySession, Exam, ConfusionItem, Note, UserStats } from '@/lib/types';
+import type { Subject, StudySession, Exam, ConfusionItem, Note, AIConversation, UserStats } from '@/lib/types';
 import { XP_PER_MINUTE, calculateLevel } from '@/lib/types';
 
 function loadJSON<T>(key: string, fallback: T): T {
