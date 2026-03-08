@@ -103,6 +103,7 @@ export default function Layout({ children }: LayoutProps) {
           {children}
         </motion.div>
       </main>
+      <MusicPlayer />
     </div>
   );
 }
