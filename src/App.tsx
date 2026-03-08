@@ -76,7 +76,7 @@ const App = () => (
                     <Route path="/exams" element={<ExamsPage />} />
                     <Route path="/ai-assistant" element={<AIAssistantPage />} />
                     <Route path="/study-room" element={<VirtualStudyRoomPage />} />
-                    <Route path="/friends" element={<StudyWithFriendsPage />} />
+                    <Route path="/friends" element={<Navigate to="/study-room" replace />} />
                   </Route>
                 </Route>
 
