@@ -51,6 +51,14 @@ export interface Note {
   updatedAt: string;
 }
 
+export interface AIConversation {
+  id: string;
+  mode: 'explain' | 'summarize' | 'questions';
+  query: string;
+  response: string;
+  createdAt: string;
+}
+
 export interface UserStats {
   totalStudyTime: number;
   totalXP: number;

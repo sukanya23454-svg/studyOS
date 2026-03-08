@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Subject, StudySession, Exam, ConfusionItem, Note, UserStats } from '@/lib/types';
+import type { Subject, StudySession, Exam, ConfusionItem, Note, AIConversation, UserStats } from '@/lib/types';
 import { XP_PER_MINUTE, calculateLevel } from '@/lib/types';
 
 function loadJSON<T>(key: string, fallback: T): T {
@@ -35,6 +35,7 @@ export function useStudyData() {
   const [exams, setExams] = useState<Exam[]>(() => loadJSON('studyos_exams', []));
   const [confusions, setConfusions] = useState<ConfusionItem[]>(() => loadJSON('studyos_confusions', []));
   const [notes, setNotes] = useState<Note[]>(() => loadJSON('studyos_notes', []));
+  const [aiHistory, setAiHistory] = useState<AIConversation[]>(() => loadJSON('studyos_ai_history', []));
   const [stats, setStats] = useState<UserStats>(() => {
     const s = loadJSON('studyos_stats', defaultStats);
     if (s.todayDate !== today()) {
@@ -48,6 +49,7 @@ export function useStudyData() {
   useEffect(() => saveJSON('studyos_exams', exams), [exams]);
   useEffect(() => saveJSON('studyos_confusions', confusions), [confusions]);
   useEffect(() => saveJSON('studyos_notes', notes), [notes]);
+  useEffect(() => saveJSON('studyos_ai_history', aiHistory), [aiHistory]);
   useEffect(() => saveJSON('studyos_stats', stats), [stats]);
 
   const addSubject = useCallback((name: string, color: string) => {
@@ -127,12 +129,25 @@ export function useStudyData() {
     setStats(prev => ({ ...prev, dailyGoalMinutes: minutes }));
   }, []);
 
+  const addAIConversation = useCallback((mode: AIConversation['mode'], query: string, response: string) => {
+    setAiHistory(prev => [...prev, { id: crypto.randomUUID(), mode, query, response, createdAt: new Date().toISOString() }]);
+  }, []);
+
+  const deleteAIConversation = useCallback((id: string) => {
+    setAiHistory(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  const clearAIHistory = useCallback(() => {
+    setAiHistory([]);
+  }, []);
+
   return {
-    subjects, sessions, exams, confusions, notes, stats,
+    subjects, sessions, exams, confusions, notes, stats, aiHistory,
     addSubject, deleteSubject, addSession,
     addExam, deleteExam,
     addConfusion, toggleConfusion, deleteConfusion,
     addNote, updateNote, deleteNote,
     setDailyGoal,
+    addAIConversation, deleteAIConversation, clearAIHistory,
   };
 }
