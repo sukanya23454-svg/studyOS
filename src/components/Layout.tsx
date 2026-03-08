@@ -14,7 +14,6 @@ import {
   Sparkles,
   BrainCircuit,
   Palette,
-  Users,
 } from 'lucide-react';
 
 const navItems = [
@@ -26,8 +25,7 @@ const navItems = [
   { to: '/analytics', icon: BarChart3, label: 'Analytics' },
   { to: '/exams', icon: CalendarClock, label: 'Exams' },
   { to: '/ai-assistant', icon: BrainCircuit, label: 'AI Assistant' },
-  { to: '/study-room', icon: Palette, label: 'Virtual Room' },
-  { to: '/friends', icon: Users, label: 'Study Friends' },
+  { to: '/study-room', icon: Palette, label: 'Study Room' },
 ];
 
 interface LayoutProps {

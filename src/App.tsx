@@ -21,7 +21,7 @@ import AnalyticsPage from "@/pages/AnalyticsPage";
 import ExamsPage from "@/pages/ExamsPage";
 import AIAssistantPage from "@/pages/AIAssistantPage";
 import VirtualStudyRoomPage from "@/pages/VirtualStudyRoomPage";
-import StudyWithFriendsPage from "@/pages/StudyWithFriendsPage";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -76,7 +76,7 @@ const App = () => (
                     <Route path="/exams" element={<ExamsPage />} />
                     <Route path="/ai-assistant" element={<AIAssistantPage />} />
                     <Route path="/study-room" element={<VirtualStudyRoomPage />} />
-                    <Route path="/friends" element={<StudyWithFriendsPage />} />
+                    <Route path="/friends" element={<Navigate to="/study-room" replace />} />
                   </Route>
                 </Route>
 
