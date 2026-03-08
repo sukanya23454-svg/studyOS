@@ -2,10 +2,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { StudyProvider } from "@/contexts/StudyContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import LandingPage from "@/pages/LandingPage";
+import LoginPage from "@/pages/LoginPage";
+import SignupPage from "@/pages/SignupPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import Dashboard from "@/pages/Dashboard";
 import TimerPage from "@/pages/TimerPage";
 import SubjectsPage from "@/pages/SubjectsPage";
@@ -17,6 +22,19 @@ import AIAssistantPage from "@/pages/AIAssistantPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+function ProtectedRoute() {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-muted-foreground text-sm animate-pulse">Loading...</div>
+      </div>
+    );
+  }
+  if (!user) return <Navigate to="/login" replace />;
+  return <Outlet />;
+}
 
 function AppLayout() {
   return (
@@ -31,28 +49,36 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <StudyProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Landing page — no sidebar */}
-            <Route path="/" element={<LandingPage />} />
+      <AuthProvider>
+        <StudyProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-            {/* App pages — with sidebar layout */}
-            <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/timer" element={<TimerPage />} />
-              <Route path="/subjects" element={<SubjectsPage />} />
-              <Route path="/notes" element={<NotesPage />} />
-              <Route path="/confusion" element={<ConfusionPage />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
-              <Route path="/exams" element={<ExamsPage />} />
-              <Route path="/ai-assistant" element={<AIAssistantPage />} />
-            </Route>
+              {/* Protected app routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/timer" element={<TimerPage />} />
+                  <Route path="/subjects" element={<SubjectsPage />} />
+                  <Route path="/notes" element={<NotesPage />} />
+                  <Route path="/confusion" element={<ConfusionPage />} />
+                  <Route path="/analytics" element={<AnalyticsPage />} />
+                  <Route path="/exams" element={<ExamsPage />} />
+                  <Route path="/ai-assistant" element={<AIAssistantPage />} />
+                </Route>
+              </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </StudyProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </StudyProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
