@@ -14,7 +14,6 @@ import {
   Sparkles,
   BrainCircuit,
   Palette,
-  Users,
 } from 'lucide-react';
 
 const navItems = [
