@@ -585,9 +585,10 @@ export default function LandingPage() {
       {/* ══════════ FINAL CTA ══════════ */}
       <section className="relative z-20 py-28 px-6 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="font-display text-2xl sm:text-4xl font-bold" style={{ color: 'hsl(38,60%,75%)' }}>
             Ready to begin your study session?
