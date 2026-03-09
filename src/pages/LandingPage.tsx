@@ -414,9 +414,10 @@ export default function LandingPage() {
       {/* ══════════ FEATURES ══════════ */}
       <section className="relative z-20 py-24 px-6">
         <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-center font-display text-2xl sm:text-3xl font-bold mb-14"
           style={{ color: 'hsl(38,60%,75%)' }}
         >
@@ -427,10 +428,10 @@ export default function LandingPage() {
           {FEATURES.map((f, i) => (
             <motion.div
               key={f.title}
-              initial={{ opacity: 0, y: 24, rotate: 0 }}
+              initial={{ opacity: 0, y: 40, rotate: 0 }}
               whileInView={{ opacity: 1, y: 0, rotate: f.rotate }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.6 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ delay: i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ scale: 1.03, rotate: '0deg' }}
               className="rounded-2xl p-6 border backdrop-blur-md"
               style={{
@@ -463,9 +464,10 @@ export default function LandingPage() {
       <section className="relative z-20 py-24 px-6">
         <div className="max-w-3xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center mb-12"
           >
             <div
@@ -488,9 +490,10 @@ export default function LandingPage() {
 
           {/* chat mockup */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 40, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="rounded-2xl border overflow-hidden backdrop-blur-md"
             style={{
               background: 'linear-gradient(145deg, hsla(220,20%,10%,0.8), hsla(220,20%,7%,0.7))',
@@ -582,9 +585,10 @@ export default function LandingPage() {
       {/* ══════════ FINAL CTA ══════════ */}
       <section className="relative z-20 py-28 px-6 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="font-display text-2xl sm:text-4xl font-bold" style={{ color: 'hsl(38,60%,75%)' }}>
             Ready to begin your study session?
