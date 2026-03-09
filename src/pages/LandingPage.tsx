@@ -490,9 +490,10 @@ export default function LandingPage() {
 
           {/* chat mockup */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 40, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="rounded-2xl border overflow-hidden backdrop-blur-md"
             style={{
               background: 'linear-gradient(145deg, hsla(220,20%,10%,0.8), hsla(220,20%,7%,0.7))',
