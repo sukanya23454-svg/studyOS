@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import MusicPlayer from './MusicPlayer';
 import AnimatedBackground from './AnimatedBackground';
 import { useEnvironment } from '@/contexts/EnvironmentContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   LayoutDashboard,
   Timer,
@@ -14,6 +17,7 @@ import {
   Sparkles,
   BrainCircuit,
   Palette,
+  LogOut,
 } from 'lucide-react';
 
 const navItems = [
