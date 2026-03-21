@@ -1,8 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Timer, Brain, Music, BarChart3, Sparkles, MessageSquare, FileText, ChevronDown, Play, Pause, Volume2 } from 'lucide-react';
 import cozyBg from '@/assets/cozy-study-bg.jpg';
+
+/* ───── redirect authenticated users ───── */
+function AuthRedirect() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loading && user) navigate('/dashboard', { replace: true });
+  }, [user, loading, navigate]);
+  return null;
+}
 
 /* ───── floating particles ───── */
 function Particles() {
@@ -299,6 +310,7 @@ const fadeUp = {
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen overflow-x-hidden text-foreground">
+      <AuthRedirect />
       {/* ── background layers ── */}
       <div className="fixed inset-0 z-0">
         <img src={cozyBg} alt="" className="w-full h-full object-cover" />
