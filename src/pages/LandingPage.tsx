@@ -310,6 +310,7 @@ const fadeUp = {
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen overflow-x-hidden text-foreground">
+      <AuthRedirect />
       {/* ── background layers ── */}
       <div className="fixed inset-0 z-0">
         <img src={cozyBg} alt="" className="w-full h-full object-cover" />
