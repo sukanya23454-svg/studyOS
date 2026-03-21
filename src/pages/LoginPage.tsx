@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,47 +6,32 @@ import { lovable } from '@/integrations/lovable/index';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { useAuth } from '@/contexts/AuthContext';
 import { Sparkles, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import cozyBg from '@/assets/cozy-study-bg.jpg';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { user, session, loading: authLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dashboardRedirectUri = `${window.location.origin}/dashboard`;
-
-  useEffect(() => {
-    if (!authLoading && user && session) {
-      navigate('/dashboard', { replace: true });
-    }
-  }, [user, session, authLoading, navigate]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) { toast.error('Please fill in all fields'); return; }
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) { toast.error(error.message); return; }
-    if (data.session) {
-      toast.success('Welcome back!');
-      navigate('/dashboard', { replace: true });
-    }
+    toast.success('Welcome back!');
+    navigate('/dashboard');
   };
 
   const handleGoogleLogin = async () => {
-    setLoading(true);
     const { error } = await lovable.auth.signInWithOAuth('google', {
-      redirect_uri: dashboardRedirectUri,
+      redirect_uri: window.location.origin,
     });
-    if (error) {
-      setLoading(false);
-      toast.error(error.message || 'Google sign-in failed');
-    }
+    if (error) toast.error('Google sign-in failed');
   };
 
   return (
