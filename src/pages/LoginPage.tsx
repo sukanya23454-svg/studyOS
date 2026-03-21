@@ -6,6 +6,7 @@ import { lovable } from '@/integrations/lovable/index';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 import { Sparkles, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import cozyBg from '@/assets/cozy-study-bg.jpg';
 
