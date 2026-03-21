@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,16 +6,25 @@ import { lovable } from '@/integrations/lovable/index';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 import { Sparkles, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import cozyBg from '@/assets/cozy-study-bg.jpg';
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const { user, session, loading: authLoading } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const dashboardRedirectUri = `${window.location.origin}/dashboard`;
+
+  useEffect(() => {
+    if (!authLoading && user && session) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, session, authLoading, navigate]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +35,7 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: dashboardRedirectUri,
         data: { full_name: name || undefined },
       },
     });
@@ -37,10 +46,14 @@ export default function SignupPage() {
   };
 
   const handleGoogleSignup = async () => {
+    setLoading(true);
     const { error } = await lovable.auth.signInWithOAuth('google', {
-      redirect_uri: window.location.origin,
+      redirect_uri: dashboardRedirectUri,
     });
-    if (error) toast.error('Google sign-in failed');
+    if (error) {
+      setLoading(false);
+      toast.error(error.message || 'Google sign-in failed');
+    }
   };
 
   return (
