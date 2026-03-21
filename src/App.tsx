@@ -39,6 +39,19 @@ function ProtectedRoute() {
   return <Outlet />;
 }
 
+function LandingRedirect() {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-muted-foreground text-sm animate-pulse">Loading...</div>
+      </div>
+    );
+  }
+  if (user) return <Navigate to="/dashboard" replace />;
+  return <LandingPage />;
+}
+
 function AppLayout() {
   return (
     <Layout>

@@ -12,11 +12,17 @@ import cozyBg from '@/assets/cozy-study-bg.jpg';
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && user) navigate('/dashboard', { replace: true });
+  }, [user, authLoading, navigate]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
