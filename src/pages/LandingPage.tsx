@@ -5,6 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Timer, Brain, Music, BarChart3, Sparkles, MessageSquare, FileText, ChevronDown, Play, Pause, Volume2 } from 'lucide-react';
 import cozyBg from '@/assets/cozy-study-bg.jpg';
 
+/* ───── redirect authenticated users ───── */
+function AuthRedirect() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loading && user) navigate('/dashboard', { replace: true });
+  }, [user, loading, navigate]);
+  return null;
+}
+
 /* ───── floating particles ───── */
 function Particles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
